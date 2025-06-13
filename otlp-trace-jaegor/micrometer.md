@@ -1,10 +1,3 @@
-
-## download agent into `./agent_lib/opentelemetry-javaagent.jar`
-
-好的，這是一份關於 Micrometer、Micrometer Tracing 和 Span 的中文整理：
-
----
-
 ## Micrometer 與分散式追蹤 (Distributed Tracing)
 
 Micrometer 是一個針對 JVM 應用程式的度量 (metrics) 檢測庫，它像一個外觀 (facade) 層，統一了各種監控系統的 API。這讓你可以收集應用程式的度量數據，而不需要綁定到特定的後端監控系統。Micrometer Tracing 則將這個概念延伸到分散式追蹤 (distributed tracing)，為不同的追蹤庫 (如 Brave 和 OpenTelemetry) 提供了類似的外觀層。
