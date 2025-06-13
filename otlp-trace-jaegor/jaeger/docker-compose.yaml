@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  jaeger:
+    image: jaegertracing/jaeger:2.7.0
+    container_name: jaeger
+    ports:
+      - "16686:16686"  # Jaeger UI
+#      - "4317:4317"    # OTLP gRPC receiver
+      - "4318:4318"    # OTLP HTTP receiver
+      - "5778:5778"    # Config server
+      - "9411:9411"    # Zipkin compatible endpoint
+    restart: unless-stopped
+    networks:
+      - otel-network
+
+networks:
+  otel-network:
+    external: true

@@ -1,0 +1,14 @@
+# 測試span
+GET http://localhost:8091/span-test/2
+
+###
+
+# 測試span
+GET http://localhost:8091/span-test/1
+
+###
+
+
+
+# span annotation
+GET http://localhost:8091/span-annotation/1
