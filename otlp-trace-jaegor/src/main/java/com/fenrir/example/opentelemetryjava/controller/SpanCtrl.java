@@ -1,7 +1,6 @@
 package com.fenrir.example.opentelemetryjava.controller;
 
 import com.fenrir.example.opentelemetryjava.service.SpanHappyService;
-import com.fenrir.example.opentelemetryjava.service.SpanHappyServiceImpl;
 import io.micrometer.common.KeyValues;
 import io.micrometer.observation.Observation;
 import io.micrometer.observation.ObservationRegistry;
