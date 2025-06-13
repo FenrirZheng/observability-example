@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  jaeger:
+    #    badger local storage 需要建制folder
+    user: "0:0"  # 以 root 用戶運行
+    image: jaegertracing/jaeger:2.7.0
+    container_name: jaeger
+    command:
+      - "--config"
+      - "/jaeger/config.yaml"
+    environment:
+      - SPAN_STORAGE_TYPE=badger
+      - BADGER_EPHEMERAL=false
+      - BADGER_DIRECTORY_VALUE=/badger/data
+      - BADGER_DIRECTORY_KEY=/badger/key
+    ports:
+      - "16686:16686"  # Jaeger UI
+      #      - "4317:4317"    # OTLP gRPC receiver
+      - "4318:4318"    # OTLP HTTP receiver
+      - "5778:5778"    # Config server
+      - "9411:9411"    # Zipkin compatible endpoint
+    volumes:
+      - ./config-bager.yaml:/jaeger/config.yaml
+      - jaeger-badger-data:/badger
+    restart: unless-stopped
+    networks:
+      - otel-network
+
+
+# 　　沒用的官方解法
+#    depends_on:
+#      prepare-data-dir:
+#        condition: service_completed_successfully
+#  prepare-data-dir:
+#    # Run this step as root so that we can change the directory owner.
+#    user: root
+#    image: alpine:latest
+#    command: "/bin/sh -c 'mkdir -p /badger/data && touch /badger/data/.initialized && chown -R 1000:1000 /badger'"
+#    volumes:
+#      - jaeger-badger-data:/badger
+networks:
+  otel-network:
+    external: true
+
+volumes:
+  jaeger-badger-data:
+

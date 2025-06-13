@@ -106,3 +106,9 @@ java -javaagent:./agent_lib/opentelemetry-javaagent.jar -jar ./build/libs/open-t
  * http://127.0.0.1:16686/search
 
  * 結果　![img_1.png](img/img_1.png)
+
+
+# Jaeger storage example
+
+## 使用local storage  Badger
+ * [docker-compose.yaml](jaeger/use-badger-store/docker-compose.yaml)
