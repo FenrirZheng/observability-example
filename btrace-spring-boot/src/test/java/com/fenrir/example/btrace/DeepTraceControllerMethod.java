@@ -19,6 +19,7 @@ public class DeepTraceControllerMethod {
 
     final static boolean ignoreSpringCLI = true;
 
+    final static boolean DEBUG = false;
 
     // 使用 @TLS (Thread-Local Storage) 作為追蹤開關和深度計數器
     @TLS
@@ -54,6 +55,13 @@ public class DeepTraceControllerMethod {
             AnyType[] args) {
         String name = Thread.currentThread().getName();
         println("==================== DEEP TRACE STARTED ==================== on thread: [" + name + "]");
+        // 採樣並且考慮併發問題, 如果有採樣到方法...就不進行採樣
+        if (DeepTraceControllerMethod.currentThread != null) {
+            if (DEBUG) {
+                println(className + "#" + method + "already capture for threads : " + DeepTraceControllerMethod.currentThread);
+            }
+            return;
+        }
         DeepTraceControllerMethod.currentThread = name;
         println(Strings.strcat("Triggered by: SpanCtrl.getWithAnnotation2() with args: ", str(args[0])));
         depth.set(0);
@@ -176,6 +184,7 @@ public class DeepTraceControllerMethod {
             println(Strings.strcat("SpanCtrl.getWithAnnotation2() Final Return: ", str(result)));
             println("==================== DEEP TRACE ENDED ======================\n");
             depth.set(0);
+            currentThread = null;
         }
     }
 }
