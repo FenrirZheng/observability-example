@@ -39,4 +39,8 @@ public class SpanHappyServiceImpl implements SpanHappyService {
         return helloSvr.newSpan2(id);
     }
 
+    @Override
+    public void sayHello(String hello) {
+        log.info("Hello World? {}", hello);
+    }
 }

@@ -39,3 +39,17 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+
+// 建立一個名為 exportDependencies 的任務，其類型為 Copy
+tasks.register('exportDependencies', Copy) {
+    // 描述：這個任務會將執行時期的依賴項複製到 build/exported-libs 目錄下
+    description = 'Exports runtime dependencies to a specific folder.'
+    // 設定來源：從 runtimeClasspath 這個設定中取得所有依賴項檔案
+    // runtimeClasspath 包含了執行時期需要的所有依賴項 (implementation 和 runtimeOnly)
+    from configurations.runtimeClasspath
+
+    // 設定目標目錄
+    // layout.buildDirectory.dir('exported-libs') 會指向 build/exported-libs
+    into layout.buildDirectory.dir('exported-libs')
+}
