@@ -1,0 +1,76 @@
+server:
+  port: 8091
+
+spring:
+  application:
+    name: grafana-temp-client-example
+
+# 啟用這些端點
+management:
+  prometheus:
+    metrics:
+      export:
+#        這功能測試不出來..............
+        pushgateway:
+          address: 0.0.0.0:9091
+          scheme: http
+#          token: your-secure-token
+          enabled: true
+          job: ${spring.application.name}
+          push-rate: 5s
+          shutdown-operation: put
+        enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  #endpoint:
+  #  metrics:
+  #    access: read_only
+  #  prometheus:
+  #    access: read_only
+  #  loggers:
+  #    access: read_only
+  # span ~
+  observations:
+    annotations:
+      enabled: true
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0  # 生產環境建議調整為 0.1 (10%)
+  otlp:
+    metrics:
+      export:
+        #        otlp 需要配置metrics 和 tracing endpoint
+        url: http://127.0.0.1:4319/v1/metrics
+        #        我沒有建制metric collector 暫時先關閉
+        enabled: false
+        read-timeout: 5s
+    tracing:
+      endpoint: http://127.0.0.1:4318/v1/traces
+      export:
+        enabled: false
+      transport: http
+  #  Jaegor 比zipkin好用太多了...不考慮
+  #  zipkin:
+  #    tracing:
+  #      endpoint: http://127.0.0.1:9411/api/v2/spans
+  #      export:
+  #        enabled: true
+  endpoint:
+    health:
+      show-details: "always"
+      # Prometheus endpoint configuration
+    prometheus:
+      access: read_only
+  metrics:
+    use-global-registry: true
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
+logging:
+  level:
+    io.micrometer: DEBUG

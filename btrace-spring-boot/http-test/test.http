@@ -1,0 +1,8 @@
+# span annotation
+POST http://localhost:8091/span-annotation-2/1
+Content-Type: application/json
+
+{
+  "id": "id-xxx",
+  "a": "aaa-xxx"
+}
