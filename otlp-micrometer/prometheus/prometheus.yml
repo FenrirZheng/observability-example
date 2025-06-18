@@ -1,0 +1,45 @@
+global:
+  scrape_interval: 15s # 全局抓取間隔
+  evaluation_interval: 15s # 規則評估間隔
+
+# 規則文件配置
+rule_files:
+# - "first_rules.yml"
+# - "second_rules.yml"
+
+# 抓取配置
+scrape_configs:
+  # 監控 Prometheus 自身
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: [ 'localhost:9090' ]
+
+  # 監控 Node Exporter（主機指標）
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: [ 'node-exporter:9100' ]
+  # spring application的指標
+  - job_name: 'otel-collector'
+    static_configs:
+      - targets: [ 'otel-collector:8889' ]
+    scrape_interval: 15s
+    metrics_path: /metrics
+
+  #  - job_name: 'push-gateway'
+#    static_configs:
+#      - targets: [ 'pushgateway:9091' ]
+#    honor_labels: true
+
+  # 監控其他應用程序示例
+  # - job_name: 'my-app'
+  #   static_configs:
+  #     - targets: ['my-app:8080']
+  #   metrics_path: '/metrics'
+  #   scrape_interval: 30s
+
+# Alertmanager 配置（可選）
+# alerting:
+#   alertmanagers:
+#     - static_configs:
+#         - targets:
+#           - alertmanager:9093

@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    container_name: otel-collector
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
+      - ./data/otlp-file-data.json:/otlp-file-data.json
+    ports:
+#      - "4317:4317"   # OTLP gRPC receiver
+      - "4319:4318"   # OTLP HTTP receiver
+      - "8888:8888"   # Prometheus metrics
+      - "8889:8889"   # Prometheus exporter metrics
+#      - "13133:13133" # health_check extension
+#      - "1777:1777"   # pprof extension
+#      - "55679:55679" # zpages extension
+    networks:
+      - otel-network
+
+volumes:
+  otlp-file-data:
+networks:
+  otel-network:
+    external: true

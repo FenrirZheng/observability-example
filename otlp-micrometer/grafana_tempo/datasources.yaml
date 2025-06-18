@@ -1,0 +1,23 @@
+apiVersion: 1
+
+datasources:
+  # Tempo 數據源
+  - name: Tempo
+    type: tempo
+    access: proxy
+    url: http://tempo:3200
+    uid: tempo
+
+  # Loki 數據源
+  - name: Loki
+    type: loki
+    access: proxy
+    url: http://loki:3100
+    uid: loki
+
+  # Prometheus 數據源
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    uid: prometheus

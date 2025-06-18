@@ -1,0 +1,61 @@
+#see on https://github.com/grafana/tempo/blob/main/integration/microservices/tempo.yaml
+
+server:
+  http_listen_port: 3200
+
+distributor:
+  receivers:
+    jaeger:
+      protocols:
+        thrift_http:
+          endpoint: 0.0.0.0:14268
+        grpc:
+          endpoint: 0.0.0.0:14250
+    otlp:
+      protocols:
+        grpc:
+          endpoint: 0.0.0.0:4317
+        http:
+          endpoint: 0.0.0.0:4318
+
+ingester:
+  trace_idle_period: 10s
+  max_block_bytes: 1_000_000
+  max_block_duration: 5m
+
+memberlist:
+  abort_if_cluster_join_fails: false
+  bind_port: 7946
+#  目前沒有 member
+#  join_members:
+#    - ingester-0:7946
+#    - ingester-1:7946
+#    - ingester-2:7946
+
+overrides:
+  ingestion_burst_size_bytes: 10_000_000
+  max_traces_per_user: 1000000
+
+# 正確的, 但是不使用s3 storage, mimio可以和s3整合...
+#storage:
+#  trace:
+#    backend: s3
+#    s3:
+#      bucket: tempo
+#      endpoint: minio:9000
+#      access_key: tempo
+#      secret_key: supersecret
+#      insecure: true
+#    pool:
+#      queue_depth: 2000
+#    wal:
+#      path: /var/tempo/wal
+
+#本地存儲 (Local)
+storage:
+  trace:
+    backend: local
+    local:
+      path: /var/tempo/blocks
+    wal:
+      path: /var/tempo/wal

@@ -1,0 +1,68 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: 'otel-collector'
+          scrape_interval: 10s
+          static_configs:
+            - targets: [ '0.0.0.0:8888' ]
+
+# Data sources: traces, metrics, logs
+#processors:
+#  memory_limiter:
+#    check_interval: 5s
+#    limit_mib: 4000
+#    spike_limit_mib: 500
+
+
+exporters:
+  file:
+    path: /otlp-file-data.json
+#  jaeger:
+#    endpoint: jaeger:14250
+#    tls:
+#      insecure: true
+# 提供prometheus export!, 配置之後, prometheus才能拉取資料
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+#
+#  prometheusremotewrite:
+#    endpoint: "http://prometheus:9090/api/v1/write"
+#
+#  # 如果要推送到 Push Gateway
+#  prometheus_push_gateway:
+#    endpoint: "http://pushgateway:9091"
+#    job_name: "otel-collector"
+#    push_interval: 30s
+
+extensions:
+  health_check:
+    endpoint: 0.0.0.0:13133
+  pprof:
+    endpoint: 0.0.0.0:1777
+  zpages:
+    endpoint: 0.0.0.0:55679
+
+service:
+  extensions: [ health_check, pprof, zpages ]
+  pipelines:
+    #    traces:
+    #      receivers: [ otlp ]
+    #      processors: [ memory_limiter, batch ]
+    #      exporters: [ ]
+    metrics:
+      receivers: [ otlp ]
+      processors: []
+      exporters: [ file, prometheus ]
+
+#    logs:
+#      receivers: [ otlp ]
+#      processors: [ memory_limiter, batch ]
+#      exporters: [ ]

@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  # Pushgateway - 接收推送的 metrics
+  pushgateway:
+    image: prom/pushgateway:latest
+    container_name: pushgateway
+    restart: unless-stopped
+    ports:
+      - "9091:9091"
+    command:
+      - '--web.listen-address=0.0.0.0:9091'
+      - '--web.telemetry-path=/metrics'
+      - '--persistence.file=/tmp/pushgateway.store'
+      - '--persistence.interval=5m'
+      - '--log.level=info'
+    volumes:
+      - push_gateway_data:/tmp
+    networks:
+      - otel-network
+networks:
+  otel-network:
+    external: true
