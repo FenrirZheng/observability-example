@@ -20,17 +20,48 @@ fenrir    120071  106550  0 11:35 pts/1    00:00:00 grep --color=auto --exclude-
 
 # btrace和spring 調用的神奇招數
 
-## 準備動作
+### 準備環境
 
 * [spring_at_classpath.md](doc/spring_at_classpath.md)
 
-## 使用方式
+### 調用spring bean
 
 -[SpringTrace.java](src/test/java/com/fenrir/example/btrace/SpringTrace.java)
 
+## Jstack
+
+[JStackTrace.java](src/test/java/com/fenrir/example/btrace/JStackTrace.java)
+
+結果如同這個: [jstack_result.md](doc/jstack_result.md)
+
+## JFR
+
+-　[JfrAndBtrace.java](src/test/java/com/fenrir/example/btrace/JfrAndBtrace.java)
+
+```shell
+
+-　啟動jfr
+jcmd 12345 JFR.start name=eventFactory settings=profile dumponexit=true
+
+- 關閉jfr
+jcmd 227077  JFR.stop name=eventFactory filename=./xxx 
+```
+
+- 從檔案中找出事件, 印在console
+
+```shell
+jfr print --events "eventFactory" xxx.jfr
+```
+結果
+![img_1.png](imgs/img_1.png)
+
+或是用IntelliJ看
+
+![img.png](imgs/img.png)
+
 ---
 
-# 預測情況
+# 預設情況
 
 ## 不能用迴圈
 
@@ -56,9 +87,8 @@ BTrace 的首要設計目標是安全。它被設計用來在生產環境 (Produ
 
 也就是說，你需要手動地、一個一個地存取陣列中的元素，並為你預期可能的最大陣列長度編寫程式碼。
 
-## 透過annotation啟用
+### 透過annotation啟用
 
 ```java
 @BTrace(trusted = true)
-
 ```
