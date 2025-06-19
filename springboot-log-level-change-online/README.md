@@ -48,5 +48,5 @@ Content-Type: application/vnd.spring-boot.actuator.v3+json
 
 參考資料：
 
-*https://www.baeldung.com/spring-boot-changing-log-level-at-runtime
-*https://docs.spring.io/spring-boot/reference/actuator/loggers.html
+* https://www.baeldung.com/spring-boot-changing-log-level-at-runtime
+* https://docs.spring.io/spring-boot/reference/actuator/loggers.html
