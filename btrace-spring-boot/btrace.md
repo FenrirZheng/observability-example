@@ -36,7 +36,7 @@ fenrir    120071  106550  0 11:35 pts/1    00:00:00 grep --color=auto --exclude-
 
 ## JFR
 
--　[JfrAndBtrace.java](src/test/java/com/fenrir/example/btrace/JfrAndBtrace.java)
+-[JfrAndBtrace.java](src/test/java/com/fenrir/example/btrace/JfrAndBtrace.java)
 
 ```shell
 
@@ -52,6 +52,7 @@ jcmd 227077  JFR.stop name=eventFactory filename=./xxx
 ```shell
 jfr print --events "eventFactory" xxx.jfr
 ```
+
 結果
 ![img_1.png](imgs/img_1.png)
 
@@ -62,6 +63,12 @@ jfr print --events "eventFactory" xxx.jfr
 ---
 
 # 預設情況
+
+# 如果使用`@BTrace(trusted = true)`時, 需要額外配置
+
+- 2個法選擇一個
+* 在`/home/fenrir/.sdkman/candidates/btrace/2.2.6/bin/btrace`上加上j`vm 參數` `-Dcom.sun.btrace.unsafe=true`
+* `btrace -u`
 
 ## 不能用迴圈
 
