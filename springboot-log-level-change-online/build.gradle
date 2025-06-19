@@ -1,0 +1,56 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.0'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.fenrir.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'io.micrometer:micrometer-tracing'
+    implementation 'org.aspectj:aspectjweaver'
+    implementation 'io.opentelemetry:opentelemetry-exporter-otlp'
+    implementation 'io.micrometer:micrometer-tracing-bridge-otel'
+    implementation 'io.micrometer:micrometer-registry-otlp'
+    implementation 'io.micrometer:micrometer-tracing'
+
+
+    implementation("io.btrace:btrace-client:2.2.6")
+
+    implementation("com.alibaba.fastjson2:fastjson2:2.0.57")
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+
+// 建立一個名為 exportDependencies 的任務，其類型為 Copy
+tasks.register('exportDependencies', Copy) {
+    // 描述：這個任務會將執行時期的依賴項複製到 build/exported-libs 目錄下
+    description = 'Exports runtime dependencies to a specific folder.'
+    // 設定來源：從 runtimeClasspath 這個設定中取得所有依賴項檔案
+    // runtimeClasspath 包含了執行時期需要的所有依賴項 (implementation 和 runtimeOnly)
+    from configurations.runtimeClasspath
+
+    // 設定目標目錄
+    // layout.buildDirectory.dir('exported-libs') 會指向 build/exported-libs
+    into layout.buildDirectory.dir('exported-libs')
+}

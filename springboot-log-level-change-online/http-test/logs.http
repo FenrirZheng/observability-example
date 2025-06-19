@@ -1,0 +1,39 @@
+
+# curl http://localhost:8080/log
+
+GET http://localhost:8091/actuator/loggers
+Accept: application/vnd.spring-boot.actuator.v3+json
+
+###
+
+GET http://localhost:8091/actuator/loggers/com.fenrir.example.btrace.controller.SpanCtrl
+Accept: application/vnd.spring-boot.actuator.v3+json
+
+###
+POST http://localhost:8091/actuator/loggers/com.fenrir.example.btrace.controller.SpanCtrl
+Content-Type: application/vnd.spring-boot.actuator.v3+json
+
+{
+  "configuredLevel": "TRACE"
+}
+
+
+### 驗證結果
+
+
+POST http://localhost:8091/span-annotation-2/1
+Content-Type: application/json
+
+{
+  "id": "id-xxx",
+  "a": "aaa-xxx"
+}
+
+
+### 改回去
+POST http://localhost:8091/actuator/loggers/com.fenrir.example.btrace.controller.SpanCtrl
+Content-Type: application/vnd.spring-boot.actuator.v3+json
+
+{
+  "configuredLevel": "INFO"
+}
