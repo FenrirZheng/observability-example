@@ -32,7 +32,7 @@ Content-Type: application/vnd.spring-boot.actuator.v3+json
 
 ```
 
-* https://docs.spring.io/spring-boot/reference/actuator/loggers.html
+* json 參數資訊 由這得知... https://docs.spring.io/spring-boot/reference/actuator/loggers.html
 
 
 - 驗證結果, 有效!!
@@ -42,3 +42,11 @@ Content-Type: application/vnd.spring-boot.actuator.v3+json
 ![img_6.png](imgs/img_6.png)
 
 ![img_5.png](imgs/img_5.png)
+
+
+---
+
+參考資料：
+
+*https://www.baeldung.com/spring-boot-changing-log-level-at-runtime
+*https://docs.spring.io/spring-boot/reference/actuator/loggers.html
